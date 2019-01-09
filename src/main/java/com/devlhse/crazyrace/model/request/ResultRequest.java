@@ -175,7 +175,7 @@ public class ResultRequest {
                 formatterWithHour.parseDateTime(resultRequest.getHour()),
                 pilot,
                 resultRequest.getLap(),
-                formatterWithoutHour.parseDateTime(resultRequest.getLapTime()),
+                formatterWithoutHour.parseLocalTime(resultRequest.getLapTime()),
                 resultRequest.getAverageLapSpeed());
         return result;
     }

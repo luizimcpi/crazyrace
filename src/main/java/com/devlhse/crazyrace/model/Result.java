@@ -1,16 +1,17 @@
 package com.devlhse.crazyrace.model;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 public class Result {
 
     private DateTime hour;
     private Pilot pilot;
     private int lap;
-    private DateTime lapTime;
+    private LocalTime lapTime;
     private double averageLapSpeed;
     
-	public Result(DateTime hour, Pilot pilot, int lap, DateTime lapTime, double averageLapSpeed) {
+	public Result(DateTime hour, Pilot pilot, int lap, LocalTime lapTime, double averageLapSpeed) {
 		super();
 		this.hour = hour;
 		this.pilot = pilot;
@@ -31,7 +32,7 @@ public class Result {
 		return lap;
 	}
 
-	public DateTime getLapTime() {
+	public LocalTime getLapTime() {
 		return lapTime;
 	}
 

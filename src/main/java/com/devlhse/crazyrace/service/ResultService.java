@@ -3,8 +3,11 @@ package com.devlhse.crazyrace.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.joda.time.LocalTime;
 
 import com.devlhse.crazyrace.model.Result;
 import com.devlhse.crazyrace.model.request.ResultRequest;
@@ -53,16 +56,33 @@ public class ResultService {
 	public List<ResultResponse> getOutput(List<ResultRequest> results) {
 		
 		List<ResultRequest> sortedRequest = orderRequestListByPilotAndLap(results);
-	    List<Result> resultsModel = 
+	    Map<Integer, List<Result>> resultsMap = 
 	    		sortedRequest.stream()
 	    		.map(r -> r.toResultModel(r))
-	    		.collect(Collectors.toList());
+	    		.collect(Collectors.groupingBy(x -> x.getPilot().getCode()));
 		
-		for (Result result : resultsModel) {
-			System.out.println("RESULT >>>>> " + result.toString());
-		}
+	    List<ResultResponse> responses = new ArrayList<>();
+	    
+	    for (Map.Entry<Integer, List<Result>> entry : resultsMap.entrySet()){
+	    	int totalCompletedLaps = 0;
+	    	int pilotCode = entry.getKey();
+	    	int position = 0;
+	    	String pilotName = "";
+	    	String totalRaceTime = "";
+	    	long raceTimeSum = 0;
+	    	
+	    	for(Result result : entry.getValue()) {
+    			totalCompletedLaps++;
+    			raceTimeSum += result.getLapTime().getMillisOfDay();
+    			pilotName = result.getPilot().getName();
+	    	}
+	    	LocalTime lt = new LocalTime(raceTimeSum);
+	    	totalRaceTime = lt.toString("mm:ss.SSS");
+	    	ResultResponse resultResponse = new ResultResponse(position, pilotCode, pilotName, totalCompletedLaps, totalRaceTime);
+	    	responses.add(resultResponse);
+	    }
 		
-		return new ArrayList<>();
+		return responses;
 	}
 
 	private List<ResultRequest> orderRequestListByPilotAndLap(List<ResultRequest> results) {

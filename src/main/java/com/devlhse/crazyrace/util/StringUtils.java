@@ -8,4 +8,20 @@ public class StringUtils {
         }
         return lineOfFile.split("\\s+");
     }
+    
+    public static int convertToInt(String input) {
+    	try {
+    		return Integer.valueOf(input);
+    	}catch(Exception e) {
+    		return 0;
+    	}
+    }
+    
+    public static double convertToDouble(String input) {
+    	try {
+    		return Double.valueOf(input);
+    	}catch(Exception e) {
+    		return 0;
+    	}
+    }
 }

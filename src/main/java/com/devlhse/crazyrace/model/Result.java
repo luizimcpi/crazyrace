@@ -2,8 +2,6 @@ package com.devlhse.crazyrace.model;
 
 import org.joda.time.DateTime;
 
-import java.util.Objects;
-
 public class Result {
 
     private DateTime hour;
@@ -11,60 +9,91 @@ public class Result {
     private int lap;
     private DateTime lapTime;
     private double averageLapSpeed;
+    
+	public Result(DateTime hour, Pilot pilot, int lap, DateTime lapTime, double averageLapSpeed) {
+		super();
+		this.hour = hour;
+		this.pilot = pilot;
+		this.lap = lap;
+		this.lapTime = lapTime;
+		this.averageLapSpeed = averageLapSpeed;
+	}
 
-    public Result(DateTime hour, Pilot pilot, int lap, DateTime lapTime, double averageLapSpeed) {
-        this.hour = hour;
-        this.pilot = pilot;
-        this.lap = lap;
-        this.lapTime = lapTime;
-        this.averageLapSpeed = averageLapSpeed;
-    }
+	public DateTime getHour() {
+		return hour;
+	}
 
-    public DateTime getHour() {
-        return hour;
-    }
+	public Pilot getPilot() {
+		return pilot;
+	}
 
-    public Pilot getPilot() {
-        return pilot;
-    }
+	public int getLap() {
+		return lap;
+	}
 
-    public int getLap() {
-        return lap;
-    }
+	public DateTime getLapTime() {
+		return lapTime;
+	}
 
-    public DateTime getLapTime() {
-        return lapTime;
-    }
+	public double getAverageLapSpeed() {
+		return averageLapSpeed;
+	}
+	
+	
 
-    public double getAverageLapSpeed() {
-        return averageLapSpeed;
-    }
+	@Override
+	public String toString() {
+		return "Result [hour=" + hour + ", pilot=" + pilot + ", lap=" + lap + ", lapTime=" + lapTime
+				+ ", averageLapSpeed=" + averageLapSpeed + "]";
+	}
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "hour=" + hour +
-                ", pilot=" + pilot +
-                ", lap=" + lap +
-                ", lapTime=" + lapTime +
-                ", averageLapSpeed=" + averageLapSpeed +
-                '}';
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(averageLapSpeed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((hour == null) ? 0 : hour.hashCode());
+		result = prime * result + lap;
+		result = prime * result + ((lapTime == null) ? 0 : lapTime.hashCode());
+		result = prime * result + ((pilot == null) ? 0 : pilot.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Result result = (Result) o;
-        return lap == result.lap &&
-                Double.compare(result.averageLapSpeed, averageLapSpeed) == 0 &&
-                Objects.equals(hour, result.hour) &&
-                Objects.equals(pilot, result.pilot) &&
-                Objects.equals(lapTime, result.lapTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(hour, pilot, lap, lapTime, averageLapSpeed);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Result other = (Result) obj;
+		if (Double.doubleToLongBits(averageLapSpeed) != Double.doubleToLongBits(other.averageLapSpeed))
+			return false;
+		if (hour == null) {
+			if (other.hour != null)
+				return false;
+		} else if (!hour.equals(other.hour))
+			return false;
+		if (lap != other.lap)
+			return false;
+		if (lapTime == null) {
+			if (other.lapTime != null)
+				return false;
+		} else if (!lapTime.equals(other.lapTime))
+			return false;
+		if (pilot == null) {
+			if (other.pilot != null)
+				return false;
+		} else if (!pilot.equals(other.pilot))
+			return false;
+		return true;
+	}
+	
+	
+	
+    
+    
 }

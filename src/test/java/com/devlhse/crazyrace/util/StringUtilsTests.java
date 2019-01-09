@@ -3,6 +3,7 @@ package com.devlhse.crazyrace.util;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class StringUtilsTests {
 
@@ -23,5 +24,29 @@ public class StringUtilsTests {
     @Test
     public void shouldHasZeroSizeWhenInputIsNull(){
         assertEquals(0, StringUtils.splitLineInput(INVALID_LINE_REQUEST).length);
+    }
+    
+    @Test
+    public void shouldConvertValidStringToInt(){
+    	String VALID_STRING_NUMBER = "1";
+        assertEquals(1, StringUtils.convertToInt(VALID_STRING_NUMBER));
+    }
+    
+    @Test
+    public void shouldReturnZeroWhenReceivesInvalidStringToConversion(){
+    	String INVALID_STRING_NUMBER = "A";
+        assertEquals(0, StringUtils.convertToInt(INVALID_STRING_NUMBER));
+    }
+    
+    @Test
+    public void shouldConvertValidStringToDouble(){
+    	String VALID_STRING_NUMBER = "44.275";
+    	assertTrue(44.275 == StringUtils.convertToDouble(VALID_STRING_NUMBER));
+    }
+    
+    @Test
+    public void shouldReturnZeroWhenReceivesIncalidDoubleStringToConversion(){
+    	String INVALID_STRING_NUMBER = "44.B";
+    	assertTrue(0 == StringUtils.convertToDouble(INVALID_STRING_NUMBER));
     }
 }

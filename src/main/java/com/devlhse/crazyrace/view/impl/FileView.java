@@ -3,37 +3,45 @@ package com.devlhse.crazyrace.view.impl;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
+import com.devlhse.crazyrace.model.Pilot;
+import com.devlhse.crazyrace.model.Result;
+import com.devlhse.crazyrace.model.request.ResultRequest;
+import com.devlhse.crazyrace.service.ResultService;
 import com.devlhse.crazyrace.util.StringUtils;
 import com.devlhse.crazyrace.view.MainView;
 
 public class FileView implements MainView {
+
+	private final ResultService resultService;
+
+	public FileView(ResultService resultService) {
+		this.resultService = resultService;
+	}
+
 	public void init() {
 		Scanner input = new Scanner(System.in);
 		System.out.printf("Informe o nome de arquivo texto:\n");
 		String fileName = input.nextLine();
-
+		List<Result> results = new ArrayList<>();
 		System.out.println("<<<<<<<<<<<<<============================Output =============================>>>>>>> ");
 		try {
 			FileReader file = new FileReader(fileName);
 			BufferedReader fileReader = new BufferedReader(file);
 			boolean firstLine = true;
-			String linha = fileReader.readLine();
-			while (linha != null) {
+			String line = fileReader.readLine();
 
+			while (line != null) {
 				if(!firstLine) {
-					System.out.println("LINE CONTENT >>>>>> " + linha);
-					String[] splitedLine = StringUtils.splitLineInput(linha);
-
-
-					System.out.println("SPLITED>>>> " + splitedLine.length);
-					for (String word : splitedLine) {
-						System.out.println("WORD>>>>>>> " + word);
-					}
+//					System.out.println("LINE CONTENT >>>>>> " + line);
+					results.add(resultService.convertRequestLine(StringUtils.splitLineInput(line)));
 				}
 
-				linha = fileReader.readLine();
+				line = fileReader.readLine();
 				firstLine = false;
 			}
 
@@ -43,5 +51,11 @@ public class FileView implements MainView {
 		}
 
 		System.out.println();
+
+		results.sort(Comparator.comparing(Result::getLap));
+
+		for (Result result : results) {
+			System.out.println("RESULT >>>>> " + result.toString());
+		}
 	}
 }

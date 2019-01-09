@@ -4,15 +4,15 @@ import java.util.Objects;
 
 public class Pilot {
 
-    private Long code;
+    private int code;
     private String name;
 
-    public Pilot(Long code, String name) {
+    public Pilot(int code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public Long getCode() {
+    public int getCode() {
         return code;
     }
 
@@ -41,4 +41,5 @@ public class Pilot {
     public int hashCode() {
         return Objects.hash(code, name);
     }
+
 }

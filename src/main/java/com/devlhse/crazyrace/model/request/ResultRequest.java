@@ -1,6 +1,9 @@
-package com.devlhse.crazyrace.dto;
+package com.devlhse.crazyrace.model.request;
 
 import com.devlhse.crazyrace.model.Pilot;
+import com.devlhse.crazyrace.model.Result;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class ResultRequest {
 
@@ -48,4 +51,19 @@ public class ResultRequest {
                 ", averageLapSpeed=" + averageLapSpeed +
                 '}';
     }
+
+    public Result toResultModel(ResultRequest resultRequest){
+        //TODO refactor
+        DateTimeFormatter formatterWithoutHour = DateTimeFormat.forPattern("mm:ss.SSS");
+        DateTimeFormatter formatterWithHour = DateTimeFormat.forPattern("HH:mm:ss.SSS");
+        Result result = new Result(
+                formatterWithHour.parseDateTime(resultRequest.getHour()),
+                resultRequest.getPilot(),
+                resultRequest.getLap(),
+                formatterWithoutHour.parseDateTime(resultRequest.lapTime),
+                resultRequest.getAverageLapSpeed());
+//        System.out.println("RESULT MODEL >>>> " + result.toString());
+        return result;
+    }
+
 }

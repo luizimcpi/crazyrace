@@ -81,6 +81,21 @@ public class ResultService {
 	    	ResultResponse resultResponse = new ResultResponse(position, pilotCode, pilotName, totalCompletedLaps, totalRaceTime);
 	    	responses.add(resultResponse);
 	    }
+	    
+	    Map<Object, List<ResultResponse>> responseMap = 
+	    		responses.stream()
+	    		.filter(r -> r.getTotalCompletedLaps() > 3)
+	    		.collect(Collectors.groupingBy(x -> LocalTime.parse(x.getTotalRaceTime())));
+	    
+	    responses = new ArrayList<>();
+	    int position = 1;
+	    for (Map.Entry<Object, List<ResultResponse>> entry : responseMap.entrySet()){
+	    	for(ResultResponse resultResponse : entry.getValue()) {
+	    		ResultResponse response = new ResultResponse(position++, resultResponse.getPilotCode(), resultResponse.getPilotName(), resultResponse.getTotalCompletedLaps(), resultResponse.getTotalRaceTime());
+	    		responses.add(response);
+	    	}
+	    }
+	    
 		
 		return responses;
 	}

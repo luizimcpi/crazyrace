@@ -15,55 +15,62 @@ import com.devlhse.crazyrace.view.MainView;
 
 public class FileView implements MainView {
 
-	private static final String BLANK_SPACE = "                 ";
-	private final ResultService resultService;
+    private static final String TAB_SPACE = "\t";
+    private final ResultService resultService;
 
-	public FileView(ResultService resultService) {
-		this.resultService = resultService;
-	}
+    public FileView(ResultService resultService) {
+        this.resultService = resultService;
+    }
 
-	public void init() {
-		Scanner input = new Scanner(System.in);
-		System.out.printf("Informe o nome de arquivo texto:\n");
-		String fileName = input.nextLine();
-		List<ResultRequest> results = new ArrayList<>();
+    public void init() {
+        Scanner input = new Scanner(System.in);
+        System.out.printf("Informe o nome de arquivo texto:\n");
+        String fileName = input.nextLine();
+        List<ResultRequest> results = new ArrayList<>();
 
-		try {
-			FileReader file = new FileReader(fileName);
-			BufferedReader fileReader = new BufferedReader(file);
-			boolean firstLine = true;
-			String line = fileReader.readLine();
+        try {
+            FileReader file = new FileReader(fileName);
+            BufferedReader fileReader = new BufferedReader(file);
+            boolean firstLine = true;
+            String line = fileReader.readLine();
 
-			while (line != null) {	
-				if(!firstLine) {
-					results.add(resultService.convertLineToRequest(StringUtils.splitLineInput(line)));
-				}
+            while (line != null) {
+                if (!firstLine) {
+                    results.add(resultService.convertLineToRequest(StringUtils.splitLineInput(line)));
+                }
 
-				line = fileReader.readLine();
-				firstLine = false;
-			}
+                line = fileReader.readLine();
+                firstLine = false;
+            }
 
-			file.close();
-		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
-		}
-		
-		this.showOutput(results);
-		input.close();
-	}
+            file.close();
+        } catch (IOException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
+        }
 
-	private void showOutput(List<ResultRequest> results) {
-		if(results.isEmpty()) {
-			System.out.println("Não existe saída para a entrada informada");
-		} else {
-			List<ResultResponse> response = resultService.getOutput(results);
-			
-			System.out.println("Posição Chegada   Código Piloto  Nome Piloto  Qtde Voltas Completadas  Tempo Total de Prova");
-			for (ResultResponse resultResponse : response) {
-				System.out.println(resultResponse.getPosition()+BLANK_SPACE+resultResponse.getPilotCode()+BLANK_SPACE+resultResponse.getPilotName()+BLANK_SPACE+resultResponse.getTotalCompletedLaps()+BLANK_SPACE+resultResponse.getTotalRaceTime());
-			}
-		}
-		
-	}
+        this.showOutput(results);
+        input.close();
+    }
+
+    private void showOutput(List<ResultRequest> results) {
+        if (results.isEmpty()) {
+            printDefaultErrorMessage();
+        } else {
+            List<ResultResponse> response = resultService.getOutput(results);
+
+            if(response.isEmpty()){
+                System.out.println("Não existe saída para a entrada informada");
+            }else{
+                System.out.println("Posição_Chegada" + TAB_SPACE + "Código_Piloto" + TAB_SPACE + "Nome_Piloto" + TAB_SPACE + "Qtde_Voltas_Completadas" + TAB_SPACE + "Tempo_Total_de_Prova");
+                for (ResultResponse resultResponse : response) {
+                    System.out.println(resultResponse.getPosition() + TAB_SPACE + resultResponse.getPilotCode() + TAB_SPACE + resultResponse.getPilotName() + TAB_SPACE + resultResponse.getTotalCompletedLaps() + TAB_SPACE + resultResponse.getTotalRaceTime());
+                }
+            }
+        }
+    }
+
+    private void printDefaultErrorMessage() {
+        System.out.println("Não existe saída para a entrada informada");
+    }
 
 }

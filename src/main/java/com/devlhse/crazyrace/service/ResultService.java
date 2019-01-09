@@ -99,7 +99,7 @@ public class ResultService {
 
 	private List<ResultRequest> orderRequestListByPilotAndLap(List<ResultRequest> results) {
 		Comparator<ResultRequest> comparator = Comparator.comparing(request -> request.getPilotCode());
-	    comparator = comparator.thenComparing(Comparator.comparing(request -> request.getLap()));
+	    comparator = comparator.thenComparing(request -> request.getLap());
 
 	    Stream<ResultRequest> requestStream = results.stream().sorted(comparator);
 	    List<ResultRequest> sortedRequest = requestStream.collect(Collectors.toList());

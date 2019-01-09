@@ -82,22 +82,19 @@ public class ResultService {
 	    	responses.add(resultResponse);
 	    }
 	    
-	    Map<Object, List<ResultResponse>> responseMap = 
-	    		responses.stream()
-	    		.filter(r -> r.getTotalCompletedLaps() > 3)
-	    		.collect(Collectors.groupingBy(x -> LocalTime.parse(x.getTotalRaceTime())));
+	    responses = orderResponseListByTotalRaceTime(responses);
 	    
-	    responses = new ArrayList<>();
-	    int position = 1;
-	    for (Map.Entry<Object, List<ResultResponse>> entry : responseMap.entrySet()){
-	    	for(ResultResponse resultResponse : entry.getValue()) {
-	    		ResultResponse response = new ResultResponse(position++, resultResponse.getPilotCode(), resultResponse.getPilotName(), resultResponse.getTotalCompletedLaps(), resultResponse.getTotalRaceTime());
-	    		responses.add(response);
-	    	}
-	    }
-	    
-		
-		return responses;
+		return setPositions(responses);
+	}
+
+	private List<ResultResponse> setPositions(List<ResultResponse> responses) {
+		List<ResultResponse> formattedResponses = new ArrayList<>();
+	    int position = 0;
+	    for (ResultResponse resultResponse : responses) {
+	    	ResultResponse responseConverted = new ResultResponse(++position, resultResponse.getPilotCode(), resultResponse.getPilotName(), resultResponse.getTotalCompletedLaps(), resultResponse.getTotalRaceTime());
+	    	formattedResponses.add(responseConverted);
+		}
+		return formattedResponses;
 	}
 
 	private List<ResultRequest> orderRequestListByPilotAndLap(List<ResultRequest> results) {
@@ -107,5 +104,11 @@ public class ResultService {
 	    Stream<ResultRequest> requestStream = results.stream().sorted(comparator);
 	    List<ResultRequest> sortedRequest = requestStream.collect(Collectors.toList());
 		return sortedRequest;
+	}
+	
+	private List<ResultResponse> orderResponseListByTotalRaceTime(List<ResultResponse> responses){
+		Comparator<ResultResponse> comparator = Comparator.comparing(request -> LocalTime.parse(request.getTotalRaceTime()));
+		Stream<ResultResponse> responseStream = responses.stream().sorted(comparator).filter(r -> r.getTotalCompletedLaps() > 3);
+		return responseStream.collect(Collectors.toList());
 	}
 }

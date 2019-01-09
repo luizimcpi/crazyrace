@@ -15,6 +15,7 @@ import com.devlhse.crazyrace.view.MainView;
 
 public class FileView implements MainView {
 
+	private static final String BLANK_SPACE = "                 ";
 	private final ResultService resultService;
 
 	public FileView(ResultService resultService) {
@@ -59,7 +60,7 @@ public class FileView implements MainView {
 			
 			System.out.println("Posição Chegada   Código Piloto  Nome Piloto  Qtde Voltas Completadas  Tempo Total de Prova");
 			for (ResultResponse resultResponse : response) {
-				System.out.println(resultResponse.getPosition()+"  "+resultResponse.getPilotCode()+"  "+resultResponse.getPilotName()+"  "+resultResponse.getTotalCompletedLaps()+"  "+resultResponse.getTotalRaceTime());
+				System.out.println(resultResponse.getPosition()+BLANK_SPACE+resultResponse.getPilotCode()+BLANK_SPACE+resultResponse.getPilotName()+BLANK_SPACE+resultResponse.getTotalCompletedLaps()+BLANK_SPACE+resultResponse.getTotalRaceTime());
 			}
 		}
 		

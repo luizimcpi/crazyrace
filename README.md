@@ -1,6 +1,11 @@
 # crazyrace
 Programa que dado um arquivo com dados de uma corrida ordena e indica os vencedores.
 
+## JAVA VERSION
+
+```
+JDK 8
+```
 
 ## Build
 
@@ -23,7 +28,7 @@ java -jar target/crazyrace.jar
 ## Entrada 
 
 ```
-*Arquivo entrada.txt na raiz do projeto quando o programa solicitar apenas digite: entrada.txt
+*Arquivo entrada.txt na raiz do projeto quando o programa solicitar apenas digite: entrada.txt ou o caminho para o seu arquivo.
 ```
 
 ## Running Tests

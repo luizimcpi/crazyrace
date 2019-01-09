@@ -1,5 +1,6 @@
 package com.devlhse.crazyrace.model.request;
 
+import com.devlhse.crazyrace.util.DateTimeUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -168,14 +169,13 @@ public class ResultRequest {
 	
 
 	public Result toResultModel(ResultRequest resultRequest){
-        DateTimeFormatter formatterWithoutHour = DateTimeFormat.forPattern("mm:ss.SSS");
-        DateTimeFormatter formatterWithHour = DateTimeFormat.forPattern("HH:mm:ss.SSS");
+
         Pilot pilot = new Pilot(resultRequest.getPilotCode(), resultRequest.getPilotName());
         Result result = new Result(
-                formatterWithHour.parseDateTime(resultRequest.getHour()),
+				DateTimeUtils.toLocalTime(resultRequest.getHour(), true),
                 pilot,
                 resultRequest.getLap(),
-                formatterWithoutHour.parseLocalTime(resultRequest.getLapTime()),
+				DateTimeUtils.toLocalTime(resultRequest.getLapTime(), false),
                 resultRequest.getAverageLapSpeed());
         return result;
     }

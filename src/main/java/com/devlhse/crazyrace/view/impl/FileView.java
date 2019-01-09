@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.devlhse.crazyrace.constants.StringUtilConstants;
 import com.devlhse.crazyrace.model.request.ResultRequest;
 import com.devlhse.crazyrace.model.response.ResultResponse;
 import com.devlhse.crazyrace.service.ResultService;
@@ -15,7 +16,6 @@ import com.devlhse.crazyrace.view.MainView;
 
 public class FileView implements MainView {
 
-    private static final String TAB_SPACE = "\t";
     private final ResultService resultService;
 
     public FileView(ResultService resultService) {
@@ -61,10 +61,8 @@ public class FileView implements MainView {
             if(response.isEmpty()){
                 System.out.println("Não existe saída para a entrada informada");
             }else{
-                System.out.println("Posição_Chegada" + TAB_SPACE + "Código_Piloto" + TAB_SPACE + "Nome_Piloto" + TAB_SPACE + "Qtde_Voltas_Completadas" + TAB_SPACE + "Tempo_Total_de_Prova");
-                for (ResultResponse resultResponse : response) {
-                    System.out.println(resultResponse.getPosition() + TAB_SPACE + resultResponse.getPilotCode() + TAB_SPACE + resultResponse.getPilotName() + TAB_SPACE + resultResponse.getTotalCompletedLaps() + TAB_SPACE + resultResponse.getTotalRaceTime());
-                }
+                System.out.println("Posição_Chegada" + StringUtilConstants.TAB_SPACE + "Código_Piloto" + StringUtilConstants.TAB_SPACE + "Nome_Piloto" + StringUtilConstants.TAB_SPACE + "Qtde_Voltas_Completadas" + StringUtilConstants.TAB_SPACE + "Tempo_Total_de_Prova");
+                response.forEach(System.out::println);
             }
         }
     }

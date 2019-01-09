@@ -16,8 +16,6 @@ import com.devlhse.crazyrace.util.StringUtils;
 
 public class ResultService {
 
-    public static final String INVALID_INPUT_CHAR = "-";
-
     public ResultRequest convertLineToRequest(String[] splitedLine) {
 
         String hour = null;
@@ -60,31 +58,36 @@ public class ResultService {
 	    		sortedRequest.stream()
 	    		.map(r -> r.toResultModel(r))
 	    		.collect(Collectors.groupingBy(x -> x.getPilot().getCode()));
-		
-	    List<ResultResponse> responses = new ArrayList<>();
-	    
-	    for (Map.Entry<Integer, List<Result>> entry : resultsMap.entrySet()){
-	    	int totalCompletedLaps = 0;
-	    	int pilotCode = entry.getKey();
-	    	int position = 0;
-	    	String pilotName = "";
-	    	String totalRaceTime = "";
-	    	long raceTimeSum = 0;
-	    	
-	    	for(Result result : entry.getValue()) {
-    			totalCompletedLaps++;
-    			raceTimeSum += result.getLapTime().getMillisOfDay();
-    			pilotName = result.getPilot().getName();
-	    	}
-	    	LocalTime lt = new LocalTime(raceTimeSum);
-	    	totalRaceTime = lt.toString("mm:ss.SSS");
-	    	ResultResponse resultResponse = new ResultResponse(position, pilotCode, pilotName, totalCompletedLaps, totalRaceTime);
-	    	responses.add(resultResponse);
-	    }
-	    
-	    responses = orderResponseListByTotalRaceTime(responses);
-	    
-		return setPositions(responses);
+
+		List<ResultResponse> responses = createResponseList(resultsMap);
+
+		return setPositions(orderResponseListByTotalRaceTime(responses));
+	}
+
+	private List<ResultResponse> createResponseList(Map<Integer, List<Result>> resultsMap) {
+
+    	List<ResultResponse> responses = new ArrayList<>();
+
+		for (Map.Entry<Integer, List<Result>> entry : resultsMap.entrySet()){
+			int totalCompletedLaps = 0;
+			int pilotCode = entry.getKey();
+			int position = 0;
+			String pilotName = "";
+			String totalRaceTime = "";
+			long raceTimeSum = 0;
+
+			for(Result result : entry.getValue()) {
+				totalCompletedLaps++;
+				raceTimeSum += result.getLapTime().getMillisOfDay();
+				pilotName = result.getPilot().getName();
+			}
+			LocalTime lt = new LocalTime(raceTimeSum);
+			totalRaceTime = lt.toString("mm:ss.SSS");
+			ResultResponse resultResponse = new ResultResponse(position, pilotCode, pilotName, totalCompletedLaps, totalRaceTime);
+			responses.add(resultResponse);
+		}
+
+		return responses;
 	}
 
 	private List<ResultResponse> setPositions(List<ResultResponse> responses) {

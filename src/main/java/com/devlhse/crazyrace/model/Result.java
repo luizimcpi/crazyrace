@@ -5,13 +5,13 @@ import org.joda.time.LocalTime;
 
 public class Result {
 
-    private DateTime hour;
+    private LocalTime hour;
     private Pilot pilot;
     private int lap;
     private LocalTime lapTime;
     private double averageLapSpeed;
     
-	public Result(DateTime hour, Pilot pilot, int lap, LocalTime lapTime, double averageLapSpeed) {
+	public Result(LocalTime hour, Pilot pilot, int lap, LocalTime lapTime, double averageLapSpeed) {
 		super();
 		this.hour = hour;
 		this.pilot = pilot;
@@ -20,7 +20,7 @@ public class Result {
 		this.averageLapSpeed = averageLapSpeed;
 	}
 
-	public DateTime getHour() {
+	public LocalTime getHour() {
 		return hour;
 	}
 
